@@ -1,0 +1,49 @@
+{
+  "name": "wazibo-server",
+  "version": "1.0.0",
+  "description": "Wazibo web client",
+  "main": "index.js",
+  "scripts": {
+    "lint": "./node_modules/.bin/jshint --exclude-path=.gitignore . || true",
+    "test": "npm run lint",
+    "start": "gulp",
+    "db": "mongod --dbpath .mongodb",
+    "docker-build": "docker build -t us.gcr.io/wazibo-1143/wazibo-web .",
+    "docker-deploy": "gcloud docker push us.gcr.io/wazibo-1143/wazibo-web",
+    "gcloud-deploy": "npm run docker-build && npm run docker-deploy"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tato123/wazibo-web.git"
+  },
+  "private": true,
+  "author": "Wazibo",
+  "contributors": [
+    {
+      "name": "Jonathan Fontanez",
+      "email": "fontanezj1@gmail.com"
+    }
+  ],
+  "license": "Wazibo",
+  "dependencies": {
+    "body-parser": "^1.13.1",
+    "compression": "^1.5.0",
+    "ejs": "^2.3.4",
+    "express": "^4.13.3",
+    "express-load-routes": "^1.0.1",
+    "express-session": "^1.12.1",
+    "lodash": "^3.10.1",
+    "passport": "^0.3.2",
+    "passport-facebook": "^2.0.0",
+    "q": "^1.4.1"
+  },
+  "engines": {
+    "node": "0.10.x",
+    "npm": ">1.4.0"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-express": "^0.3.5",
+    "gulp-less": "^3.0.5"
+  }
+}

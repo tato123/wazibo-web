@@ -1,0 +1,27 @@
+{
+  "name": "wazibo-web",
+  "main": "index.js",
+  "version": "1.0.0",
+  "homepage": "https://github.com/tato123/wazibo-web",
+  "authors": [
+    "Jonathan <fontajo@yahoo.com>"
+  ],
+  "description": "Web client for wazibo",
+  "moduleType": [
+    "globals",
+    "node"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/lib/",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.6",
+    "jquery": "~2.1.4"
+  }
+}

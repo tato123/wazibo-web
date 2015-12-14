@@ -1,0 +1,7 @@
+node_modules
+node_modules/*
+.vscode
+.mongodb
+.media-uploads
+typings
+npm-debug.log
