@@ -1,4 +1,4 @@
-FROM node:0.10.40
+FROM node:0.12
 
 MAINTAINER Jonathan Fontanez<jonathan.fontanez@vce.com>
 

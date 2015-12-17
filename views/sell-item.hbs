@@ -1,0 +1,30 @@
+
+<div>
+    <div class="container">
+        <ul class="list-inline list-unstyled list-wizard-steps">
+            <li><span class="step">1</span>Where are you selling?</li>
+            <li class="active"><span class="step">2</span>What are you selling?</li>
+        </ul>
+    </div>
+</div>
+
+<div class="container">
+    <h1>Lets get to selling!</h1>
+
+    <form action="/sell/item" method="post">
+        <div class="form-group">
+            <label for="exampleInputEmail1">Name</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Name of your event">
+            <p class="help-block">Give a snazzy name to let people know</p>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">Description</label>
+            <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Description of your event">
+            <p class="help-block">Tell us more about it</p>
+        </div>
+        
+        <div class="pull-right">
+            <button type="submit" class="btn btn-default btn-large">List</button>
+        </div>
+    </form>
+</div>

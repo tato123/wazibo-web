@@ -1,14 +1,5 @@
 @import "../lib/bootstrap/less/bootstrap.less";
-
-
-//@navbar-default-bg:  rgba(255,255,255,.9);
-@navbar-default-color:             #000;
-@navbar-default-bg:                transparent;
-@navbar-default-border:             transparent;
-@navbar-height: 64px;
-@navbar-border-radius: 0px;
-
-@color-light-gray: #f8f8f8;
+@import "./variables.less";
 
 html,
 body {
@@ -16,7 +7,6 @@ body {
   height: 100%;
   padding: 0px;
   margin: 0px;
-  font-family: 'Raleway', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -24,15 +14,13 @@ body {
 .wz-header {
     position: relative;
     padding: 30px 0;
-    color: #cdbfe3;
+    color: lighten(@color-blue-gradient1, 80%);
     text-align: center;
     text-shadow: 0 1px 0 rgba(0,0,0,.1);
     background-color: #6f5499;
-    background-image: -webkit-gradient(linear,left top,left bottom,from(#563d7c),to(#6f5499));
-    background-image: -webkit-linear-gradient(top,#563d7c 0,#6f5499 100%);
-    background-image: -o-linear-gradient(top,#563d7c 0,#6f5499 100%);
-    background-image: linear-gradient(to bottom,#563d7c 0,#6f5499 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#563d7c', endColorstr='#6F5499', GradientType=0);
+    
+    background-image: linear-gradient(to bottom,@color-blue-gradient1 0,@color-blue-gradient2 100%);
+
     background-repeat: repeat-x;
 }
 
@@ -57,19 +45,10 @@ body {
     }
 }
 
-.video-playing {
-    height: 600px;
-    width: 100%;
-    object-fit: initial;
-    position:absolute;
-    top: 0px;
-    z-index: -10;
-}
-
 .wz-flat-btn {
     padding: 10px;
     border-radius: 4px;
-    color: white;
+    color: white; 
 }
 
 .wz-flat-btn-default {
@@ -98,3 +77,37 @@ body {
     border-radius: 50%;
     border: 2px solid #fff;
 }
+.btn-facebook {
+    border-color: #3B5998;
+    border-bottom-color: #263a63;
+    background-color: #3B5998;
+    color: #fff;
+}
+
+.btn-block {
+    display: block;
+    white-space: normal;
+    width: 100%;
+}
+
+.icon-btn.btn-large {
+    position: relative;
+    padding-left: 51px;
+}
+
+.step {
+        border-radius: 50%;
+        border: 2px solid #ccc;
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        padding: 3px 10px;
+        margin-right: 10px;
+    }
+    .list-wizard-steps .active {
+        color: blue;
+        
+    }
+    .active > .step {
+        border-color: blue !important;
+    } 

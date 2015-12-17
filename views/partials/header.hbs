@@ -1,0 +1,35 @@
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/" style="font-weight:600;">Wazibo</a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li>    
+                    {{#if user}}
+                        <ul class="list-inline list-unstyled">
+                            <li>
+                        <div >
+                            <img src="{{user.imageUrl}}" class="avatar wz-media-round">
+                            <span>Hello, <label>{{user.name}}</label></span>
+                        </div>
+                            </li>
+                            <li>
+                        <a href="/oauth/logout">Log out</a>
+                            </li>
+                        </ul>
+                    {{else}}
+                        <a href="/login">Log in</a>
+                    {{/if}}
+                </li>
+                <li>
+                    <a href="/sell/event">
+                        <span class="wz-flat-btn wz-flat-btn-default">Sell your items</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

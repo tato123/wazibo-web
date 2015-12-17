@@ -1,12 +1,9 @@
 var less = require('gulp-less');
 var path = require('path');
 var gulp = require('gulp');
-var server = require('gulp-express');
+var nodemon = require('gulp-nodemon');
 
-gulp.task('express', function () {
-  // Start the server at the beginning of the task 
-  server.run(['index.js']);
-})
+
 
 gulp.task('less', function () {
   return gulp.src('./public/less/*.less')
@@ -14,13 +11,17 @@ gulp.task('less', function () {
     .pipe(gulp.dest('./public/css'));
 });
 
-gulp.task('watch', function () {
-  gulp.watch(['views/**/*'], server.notify);
-  gulp.watch(['routes/*.js','routes/**/*.js'], server.notify);
-  gulp.watch(['public/less/**/*.less'], function (event) {
-    gulp.run('less');
-    server.notify(event);
+gulp.task('express', function () {
+  nodemon({
+    script: './index.js',
+    ext: 'js',
+    tasks: ['less']
   });
+})
+
+gulp.task('watch', function () {  
+  gulp.watch(['public/less/*.less', 'public/less/**/*.less'], ['less']);
+  gulp.watch(['views/**/*.hbs'], ['less']);
 })
 
 

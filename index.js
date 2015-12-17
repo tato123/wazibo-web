@@ -10,40 +10,44 @@ var express = require('express'),
     util = require('util'),
     path = require('path'),
     serverConfig = require('./config/server'),
-    passportConfig = require('./config/passport')(passport);
+    passportConfig = require('./config/passport')(passport),
+    logger = require('./logger');    
 
 // express middleware
 var bodyParser = require('body-parser');
-
-var config = {
-    port: 9080
-};
+var exphbs  = require('express-handlebars');
 
 // configure our options 
 app.disable('x-powered-by');
 
 // load our middleware
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(compression());
+app.use(session({
+    secret: 'test session',
+    resave: false,
+    saveUninitialized: true
+})); 
 app.use(passport.initialize());
 app.use(passport.session());
 
 require('express-load-routes')(app, './routes');
 app.use(express.static(path.join(__dirname, 'public')));
+
 // Set view path
-app.set('views', path.join(__dirname, 'views'));
-// set up ejs for templating. You can use whatever
-app.set('view engine', 'ejs');
+app.engine('.hbs', exphbs({defaultLayout: 'main', extname: '.hbs'}));
+app.set('view engine', '.hbs');
 
 // bootstrap the actual server
-console.log('--------------------------------------------');
-console.log('[Wazibo web] Starting with environment...');
-console.log(process.env);
-console.log('--------------------------------------------');
+logger.info('--------------------------------------------');
+logger.info('Starting with environment...');
+logger.info(process.env);
+logger.info('--------------------------------------------');
 
-console.log('[Wazibo Server] Bootstrapping environment...');
-server.listen(config.port, function () {
-    console.log('[Wazibo Server] Server available at', serverConfig.port);
+logger.info('Bootstrapping environment...');
+server.listen(serverConfig.port, function () {
+    logger.info('Server available at', serverConfig.port);
 });
 
 

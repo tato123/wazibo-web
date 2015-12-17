@@ -15,7 +15,8 @@ function ensureAuthenticated(req, res, next) {
 	if (req.isAuthenticated()) {
 		next();
 	} else {
-		res.redirect('/auth/login');
+		req.session.redirect_to = '/sell';
+		res.redirect('/login');
 	}
 }
 

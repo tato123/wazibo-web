@@ -1,0 +1,39 @@
+<div>
+    <div class="container">
+        <ul class="list-inline list-unstyled list-wizard-steps">
+            <li class="active"><span class="step">1</span>Where are you selling?</li>
+            <li><span class="step">2</span>What are you selling?</li>
+        </ul>
+    </div>
+</div>
+
+<div class="container">
+    <h1>Lets set a location </h1>
+    <p>Locations allow you to safely sell your items from a consignment shop or any number of spots</p>
+    <form action="/sell/event" method="post">
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" name="name" placeholder="Name of your event">
+            <p class="help-block">Give a snazzy name to let people know</p>
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <input type="text" class="form-control" id="description" name="description" placeholder="Description of your event">
+            <p class="help-block">Tell us more about it</p>
+        </div>
+        <div class="form-group row">
+            <div class="col-lg-1 col-md-1">
+                <label for="pictures">Dates</label>
+            </div>
+            <div class="col-lg-3 col-md-3">
+                <input type="text" id="dateFrom" placeholder="First day" class="form-control">
+            </div>
+            <div class="col-lg-3 col-md-3">
+                <input type="text" id="dateTo" placeholder="Last day" class="form-control">
+            </div>
+        </div>
+        <div class="pull-right">
+            <button type="submit" class="btn btn-default btn-large">Next</button>
+        </div>
+    </form>
+</div>
