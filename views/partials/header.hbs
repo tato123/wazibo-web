@@ -12,8 +12,10 @@
                         <ul class="list-inline list-unstyled">
                             <li>
                         <div >
-                            <img src="{{user.imageUrl}}" class="avatar wz-media-round">
-                            <span>Hello, <label>{{user.name}}</label></span>
+                            {{#if user.photos.length}}
+                            <img src="{{user.photos.0.value}}" class="avatar wz-media-round">
+                            {{/if}}
+                            <span>Hello, <label>{{user.name.givenName}}</label></span>
                         </div>
                             </li>
                             <li>

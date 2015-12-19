@@ -11,11 +11,11 @@ var express = require('express'),
     path = require('path'),
     serverConfig = require('./config/server'),
     passportConfig = require('./config/passport')(passport),
-    logger = require('./logger');    
+    logger = require('./logger'),
+    bodyParser = require('body-parser'),
+    exphbs  = require('express-handlebars'),
+    flash = require('connect-flash');    
 
-// express middleware
-var bodyParser = require('body-parser');
-var exphbs  = require('express-handlebars');
 
 // configure our options 
 app.disable('x-powered-by');
@@ -24,16 +24,22 @@ app.disable('x-powered-by');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(compression());
-app.use(session({
-    secret: 'test session',
-    resave: false,
-    saveUninitialized: true
-})); 
+app.use(session(serverConfig.session));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(flash());
+
+app.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+        message: err.message,
+        error: {}
+    });
+});
 
 require('express-load-routes')(app, './routes');
 app.use(express.static(path.join(__dirname, 'public')));
+
 
 // Set view path
 app.engine('.hbs', exphbs({defaultLayout: 'main', extname: '.hbs'}));

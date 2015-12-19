@@ -16,10 +16,6 @@ router.get('/logout', function (req, res) {
 
 router.get('/facebook', passport.authenticate('facebook'));
 
-/**
- * @description
- * Private api method, this is the oauth2 compliant callback
- */
 router.get('/facebook/callback', function (req, res, next) {
   passport.authenticate('facebook', function (err, user, info) {
     if (err) { 

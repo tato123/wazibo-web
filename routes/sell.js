@@ -16,44 +16,52 @@ router.get('/', isAuthenticated, function (req, res) {
 
 
 router.route('/event')
-	/**
-	 * @description 
-	 * Get the page for setting up a new event
-	 */ 
+/**
+ * @description 
+ * Get the page for setting up a new event
+ */
 	.get(isAuthenticated, function (req, res) {
 		res.render('sell-event', { user: req.user });
 	})
 	
-	/**
-	* @description
-	* Handles parsing and sending an event to the api server to be
-	* saved as a new event by our user
-	* */
-	.post(isAuthenticated, function (req, res) {		
-		wzapi.saveEvent(req.body)
-			.then(function(response) {
-				res.redirect('/sell/item');		
-			})
-			.catch(function(error) {
-				res.render('sell-event');
+/**
+* @description
+* Handles parsing and sending an event to the api server to be
+* saved as a new event by our user
+* */
+	.post(isAuthenticated, function (req, res) {
+		wzapi
+			.user(req.user)
+			.saveEvent(req.body, function (response) {
+				res.redirect('/sell/item?eventId=' + response._id);
+				/*
+				.catch(function(error) {
+					logger.error('Error occured saving event',error);
+					req.flash('error', 'Oops looks like we couldn\'t save your event');
+					res.render('sell-event', {message:req.flash('error')});
+				});*/
 			});
+
 	});
 
 router.route('/item')
-	/** 
-	 * @description 
-	 * Get the page for setting up a new event
-	 */ 
+/** 
+ * @description 
+ * Get the page for setting up a new event
+ */
 	.get(isAuthenticated, function (req, res) {
-		res.render('sell-item', { user: req.user });
+		if (!req.query.eventId) {
+			return res.redirect('/sell');
+		}
+		res.render('sell-item', { user: req.user, eventId: req.query.eventId });
 	})
-	/**
-	* @description
-	* Handles parsing and sending an event to the api server to be
-	* saved as a new event by our user
-	* */
+/**
+* @description
+* Handles parsing and sending an event to the api server to be
+* saved as a new event by our user
+* */
 	.post(isAuthenticated, function (req, res) {
 		res.redirect('/sell');
 	});
-	
+
 module.exports = router;

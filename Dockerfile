@@ -1,6 +1,6 @@
 FROM node:0.12
 
-MAINTAINER Jonathan Fontanez<jonathan.fontanez@vce.com>
+MAINTAINER Jonathan Fontanez<fontanezj1@gmail.com>
 
 # Commands will run in this directory
 WORKDIR /wazibo-web/src

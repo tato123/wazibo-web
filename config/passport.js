@@ -2,7 +2,9 @@
 
 var passport = require('passport'),
   FacebookStrategy = require('passport-facebook').Strategy,
-  authConfig = require('./auth');
+  authConfig = require('./auth'),
+  logger = require('../logger'),
+  wzapi = require('../client/wzapi');
 
 module.exports = function (passport) {
   
@@ -20,17 +22,29 @@ module.exports = function (passport) {
     {
       clientID: authConfig.facebook.id,
       clientSecret: authConfig.facebook.secret,
-      callbackURL: authConfig.facebook.callbackUrl
-    },    
+      callbackURL: authConfig.facebook.callbackURL
+    },
     function (accessToken, refreshToken, profile, done) {
-      var newUser = {};
+      process.nextTick(function () {
+        // enable if debugging
+        /*
+        logger.debug('--------------------------------');
+        console.log('Authenticated user: ', profile);
+        logger.debug('Access Token: ', accessToken);
+        logger.debug('Refresh Token: ', refreshToken);
+        logger.debug('--------------------------------');
+        */
 
-      newUser.id = profile.id; // set the users facebook id                   
-      newUser.accessToken = accessToken; // we will save the token that facebook provides to the user                    
-      newUser.name = 'Bill';
-      newUser.imageUrl = 'http://scienceblogs.com/gregladen/files/2012/12/Beautifull-cat-cats-14749885-1600-1200.jpg';
-      // call the external service here with our access token
-      done(null, newUser);
+
+        wzapi
+          .accessToken(accessToken)
+          .provider('facebook')
+          .getAccount(function (user) {            
+            // call the external service here with our access token
+            done(null, user.facebook);
+          });
+
+      });
 
     }));
 }
