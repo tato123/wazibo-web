@@ -11,7 +11,7 @@ var express = require('express'),
  * Manage all the things that you are selling
  */
 router.get('/', isAuthenticated, function (req, res) {
-	res.render('sell-manage', { user: req.user });
+	res.render('sell-manage', { user: req.user, message:req.flash('error') });
 });
 
 
@@ -32,8 +32,8 @@ router.route('/event')
 	.post(isAuthenticated, function (req, res) {
 		wzapi
 			.user(req.user)
-			.saveEvent(req.body, function (response) {
-				res.redirect('/sell/item?eventId=' + response._id);
+			.saveEvent(req.body, function (event) {
+				res.redirect('/sell/item?eventId=' + event._id);
 				/*
 				.catch(function(error) {
 					logger.error('Error occured saving event',error);
@@ -49,11 +49,12 @@ router.route('/item')
  * @description 
  * Get the page for setting up a new event
  */
-	.get(isAuthenticated, function (req, res) {
-		if (!req.query.eventId) {
-			return res.redirect('/sell');
-		}
-		res.render('sell-item', { user: req.user, eventId: req.query.eventId });
+	.get(isAuthenticated, function (req, res) {		
+		wzapi
+			.user(req.user)
+			.getMediaBucket(function(bucket) {
+				res.render('sell-item', { user: req.user, eventId: req.query.eventId, bucket: bucket });		
+			});				
 	})
 /**
 * @description
@@ -61,7 +62,12 @@ router.route('/item')
 * saved as a new event by our user
 * */
 	.post(isAuthenticated, function (req, res) {
-		res.redirect('/sell');
+		
+		wzapi
+			.user(req.user)
+			.saveItem(req.query.eventId, req.body, function(item) {
+				res.redirect('/sell');		
+			});		
 	});
 
 module.exports = router;

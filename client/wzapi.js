@@ -90,8 +90,8 @@ function ClientFactory() {
 			handler = arguments[1];
 		}
 
-		var url = !_.isUndefined(itemId) ? util.format('%s/%s/%s', apiConfig.url(), 'sale_item', itemId) :
-			util.format('%s/%s', apiConfig.url(), 'sale_item');
+		var url = !_.isUndefined(itemId) ? util.format('%s/%s/%s', apiConfig.url(), 'sale/item', itemId) :
+			util.format('%s/%s', apiConfig.url(), 'sale/item');
 		logger.info('calling url', url);
 		unirest.get(url)
 			.header('Accept', Media.JSON)
@@ -103,19 +103,12 @@ function ClientFactory() {
 
 	}
 
-	this.saveItem = function () {
+	this.saveItem = function (eventId, item, handler) {
 
-		var item, handler;
-		if (arguments.length === 1) {
-			handler = arguments[0]
-		}
-		if (arguments.length === 2) {
-			item = arguments[0];
-			handler = arguments[1];
-		}
-
-		var url = util.format('%s/%s', apiConfig.url(), 'sale_item');
-		logger.info('calling url', url);
+		var url = util.format('%s/%s', apiConfig.url(), 'sale/item');
+		url = _.isUndefined(eventId) ? url : url + '?event_id=' + eventId;
+		
+		logger.info('calling url', url, 'with item', item);
 		unirest.post(url)
 			.header('Accept', Media.JSON)
 			.header('Content-Type', Media.JSON)
@@ -128,11 +121,6 @@ function ClientFactory() {
 
 	this.getEvent = function () {
 		
-		logger.info('Accept', Media.JSON);
-		logger.info('Content-Type', Media.JSON);
-		logger.info('Authorization', this._bearerToken);
-		logger.info('X-Authorization-Provider', this._provider);
-		
 		var eventId, handler;
 		if (arguments.length === 1) {
 			handler = arguments[0]
@@ -144,8 +132,8 @@ function ClientFactory() {
 
 
 		logger.info('calling get event');
-		var url = !_.isUndefined(eventId) ? util.format('%s/%s/%s', apiConfig.url(), 'sale_event', eventId) :
-			util.format('%s/%s', apiConfig.url(), 'sale_event');
+		var url = !_.isUndefined(eventId) ? util.format('%s/%s/%s', apiConfig.url(), 'sale/event', eventId) :
+			util.format('%s/%s', apiConfig.url(), 'sale/event');
 
 		logger.info('calling url', url);
 		unirest.get(url)
@@ -157,23 +145,9 @@ function ClientFactory() {
 
 	}
 
-	this.saveEvent = function () {
+	this.saveEvent = function (event, handler) {		
 
-		logger.info('Accept', Media.JSON);
-		logger.info('Content-Type', Media.JSON);
-		logger.info('Authorization', this._bearerToken);
-		logger.info('X-Authorization-Provider', this._provider);
-
-		var event, handler;
-		if (arguments.length === 1) {
-			handler = arguments[0]
-		}
-		if (arguments.length === 2) {
-			event = arguments[0];
-			handler = arguments[1];
-		}		
-
-		var url = util.format('%s/%s', apiConfig.url(), 'sale_event');
+		var url = util.format('%s/%s', apiConfig.url(), 'sale/event');
 		logger.info('calling url', url);
 		unirest.post(url)
 			.header('Accept', Media.JSON)
@@ -183,6 +157,18 @@ function ClientFactory() {
 			.send(event)
 			.end(this.httpHandler.bind({ handler: handler }));
 
+	}
+	
+	this.getMediaBucket = function(handler) {
+		var url = util.format('%s/%s', apiConfig.url(), 'media/bucket');
+		logger.info('calling url', url);
+		unirest.get(url)
+			.header('Accept', Media.JSON)
+			.header('Content-Type', Media.JSON)
+			.header('Authorization', this._bearerToken)
+			.header('X-Authorization-Provider', this._provider)
+			.send()
+			.end(this.httpHandler.bind({ handler: handler }));
 	}
 }
 
@@ -198,7 +184,10 @@ ClientFactory.setupMethods = function () {
 ClientFactory.addMethod = function (methodName) {
 	ClientFactory[methodName] = function () {
 		var factory = new ClientFactory();
-		return factory[methodName].apply(factory, arguments);
+		if (_.isFunction(factory[methodName])) {
+			return factory[methodName].apply(factory, arguments);	
+		}
+		return factory[methodName] = arguments;
 	}
 }
 

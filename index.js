@@ -10,11 +10,33 @@ var express = require('express'),
     util = require('util'),
     path = require('path'),
     serverConfig = require('./config/server'),
+    apiConfig = require('./config/api'),
     passportConfig = require('./config/passport')(passport),
     logger = require('./logger'),
     bodyParser = require('body-parser'),
     exphbs  = require('express-handlebars'),
-    flash = require('connect-flash');    
+    flash = require('connect-flash'),
+    _ = require('lodash');    
+
+
+
+    // bootstrap the actual server
+logger.info('--------------------------------------------');
+logger.info('Starting with environment...');
+_.forEach(_.keys(process.env).sort(), function(key) {
+    console.log('\t%s: %s', key, process.env[key]);
+});
+logger.info('--------------------------------------------');
+
+if ( !apiConfig.validate() ) {
+    logger.error('Api configuration is invalid, exiting');
+    process.exit(1);
+}
+if (!serverConfig.validate() ) {
+    logger.error('Server configuration is invalid, exiting');
+    process.exit(1);
+}
+
 
 
 // configure our options 
@@ -45,11 +67,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.engine('.hbs', exphbs({defaultLayout: 'main', extname: '.hbs'}));
 app.set('view engine', '.hbs');
 
-// bootstrap the actual server
-logger.info('--------------------------------------------');
-logger.info('Starting with environment...');
-logger.info(process.env);
-logger.info('--------------------------------------------');
 
 logger.info('Bootstrapping environment...');
 server.listen(serverConfig.port, function () {

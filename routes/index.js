@@ -11,6 +11,8 @@ router.get('/', function(req, res) {
 	wzapi
 		.user(req.user)
 		.getEvent(function(events) {
+			logger.info('the user', req.user);
+			logger.info('events', events);
 			res.render('home', {items: events, user:req.user});	
 		});		
 }); 
