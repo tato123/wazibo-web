@@ -4,3 +4,4 @@ node_modules/*
 .mongodb
 .media-uploads
 typings
+coverage

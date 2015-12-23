@@ -1,0 +1,20 @@
+# language setting
+language: node_js
+
+# version numbers, testing against two versions of node
+node_js:
+  - 0.12
+  
+before_install:
+# Activate the required node.js version
+  - source ~/.nvm/nvm.sh && nvm install $SHIPPABLE_NODE_VERSION
+  - node --version
+  - npm install -g gulp
+
+#install the required dependencies
+install:
+  - npm install
+  
+# Running the tests with grunt
+script:
+  - gulp test

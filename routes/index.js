@@ -7,7 +7,6 @@ var express = require('express'),
 	logger = require('../logger');
 
 router.get('/', function(req, res) {
-	
 	wzapi
 		.user(req.user)
 		.getEvent(function(events) {
