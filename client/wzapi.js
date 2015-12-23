@@ -170,6 +170,26 @@ function ClientFactory() {
 			.send()
 			.end(this.httpHandler.bind({ handler: handler }));
 	}
+	
+	/**
+	 * @name localAuthentication
+	 * @description
+	 * Method for handling authentication when a user is attempting to login 
+	 * with a local, non open authentication provider (such as facebook, google, twitter, etc...)
+	 *
+	 * @param {String} email User email
+	 * @param {String} password user password
+	 * @param {Function} callback handler function
+	 */ 
+	this.localAuthentication = function(email, password, handler) {
+		var url = util.format('%s/%s', apiConfig.url(), 'account/login');
+		logger.info('calling url', url);
+		unirest.post(url)
+			.header('Accept', Media.JSON)
+			.header('Content-Type', Media.JSON)			
+			.send({email:email, password:password})
+			.end(this.httpHandler.bind({ handler: handler }));	
+	}
 }
 
 // convience sake for grabbing all of the 

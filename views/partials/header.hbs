@@ -15,7 +15,15 @@
                             {{#if user.photos.length}}
                             <img src="{{user.photos.0.value}}" class="avatar wz-media-round">
                             {{/if}}
-                            <span>Hello, <label>{{user.name.givenName}}</label></span>
+                            
+                            <span>Hello, <label>
+                            {{#if user.name.givenName}}
+                                {{user.name.givenName}}
+                            {{/if}}
+                            {{#if user.email}}
+                                {{user.email}}
+                            {{/if}}
+                            </label></span>
                         </div>
                             </li>
                             <li>

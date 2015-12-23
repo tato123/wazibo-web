@@ -4,20 +4,31 @@ var passport = require('passport'),
   FacebookStrategy = require('passport-facebook').Strategy,
   authConfig = require('./auth'),
   logger = require('../logger'),
-  wzapi = require('../client/wzapi');
+  wzapi = require('../client/wzapi'),
+  LocalStrategy = require('passport-local').Strategy;
 
 module.exports = function (passport) {
   
-  // configure the passport serialization and deserialization
+  /**
+   * @description
+   * Serialize the entire user object (as JSON)
+   */ 
   passport.serializeUser(function (user, done) {
     done(null, user);
   });
 
+  /**
+   * @description
+   * Deserialize (as JSON) the entire user object
+   */ 
   passport.deserializeUser(function (user, done) {
     done(null, user);
   });
 
-
+  /**
+   * @description
+   * Facebook passport strategy
+   */ 
   passport.use(new FacebookStrategy(
     {
       clientID: authConfig.facebook.id,
@@ -26,16 +37,6 @@ module.exports = function (passport) {
     },
     function (accessToken, refreshToken, profile, done) {
       process.nextTick(function () {
-        // enable if debugging
-        /*
-        logger.debug('--------------------------------');
-        console.log('Authenticated user: ', profile);
-        logger.debug('Access Token: ', accessToken);
-        logger.debug('Refresh Token: ', refreshToken);
-        logger.debug('--------------------------------');
-        */
-
-
         wzapi
           .accessToken(accessToken)
           .provider('facebook')
@@ -43,8 +44,28 @@ module.exports = function (passport) {
             // call the external service here with our access token
             done(null, user.facebook);
           });
-
       });
-
     }));
+    
+  /**
+   * @description
+   * Local authentication strategy
+   */   
+  passport.use(new LocalStrategy({
+    usernameField: 'email',
+    passwordField: 'password'
+  }, 
+  function(username, password, done) {
+      logger.debug('Authenticating %s with %s', username, password);
+      wzapi
+        .localAuthentication(username, password, function(response) {
+            logger.debug('Authentication response', response);
+            // we got a response that contains an issue
+            if (response.name || response.message ) {
+              done(response);
+            }
+            done(null,response.local);
+        });
+        
+  }));
 }

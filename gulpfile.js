@@ -1,9 +1,9 @@
+'use strict';
+
 var less = require('gulp-less');
 var path = require('path');
 var gulp = require('gulp');
 var nodemon = require('gulp-nodemon');
-
-
 
 gulp.task('less', function () {
   return gulp.src('./public/less/*.less')
