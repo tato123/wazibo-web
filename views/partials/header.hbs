@@ -1,22 +1,33 @@
-<nav class="navbar navbar-default">
-    <div class="container-fluid">
+<nav class="navbar navbar-default" style="border-bottom:1px solid #ccc;">
+    <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
             <a class="navbar-brand" href="/" style="font-weight:600;">Wazibo</a>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <div class="collapse navbar-collapse">
+            <form class="navbar-form navbar-left" role="search">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Search">
+                </div>
+                <button type="submit" class="btn btn-default">Search</button>
+            </form>
             <ul class="nav navbar-nav navbar-right">
-                <li>    
+         
+                <li style="border-right:1px solid #ccc;margin-right:5px; ">
+                    <a href="/sell/event">
+                        Sell
+                    </a>
+                </li>
+                <li>
                     {{#if user}}
-                        <ul class="list-inline list-unstyled">
-                            <li>
-                        <div >
-                            {{#if user.photos.length}}
-                            <img src="{{user.photos.0.value}}" class="avatar wz-media-round">
-                            {{/if}}
-                            
-                            <span>Hello, <label>
+                    <ul class="list-inline list-unstyled">
+                        <li>
+                            <div>
+                                {{#if user.photos.length}}
+                                <img src="{{user.photos.0.value}}" class="avatar wz-media-round"> {{/if}}
+
+                                <span>Hello, <label>
                             {{#if user.name.givenName}}
                                 {{user.name.givenName}}
                             {{/if}}
@@ -24,22 +35,40 @@
                                 {{user.email}}
                             {{/if}}
                             </label></span>
-                        </div>
-                            </li>
-                            <li>
-                        <a href="/oauth/logout">Log out</a>
-                            </li>
-                        </ul>
+                            </div>
+                        </li>
+                        <li>
+                            <a href="/oauth/logout">Log out</a>
+                        </li>
+                    </ul>
                     {{else}}
-                        <a href="/login">Log in</a>
-                    {{/if}}
+                    <a href="/login">Log in</a> {{/if}}
                 </li>
-                <li>
-                    <a href="/sell/event">
-                        <span class="wz-flat-btn wz-flat-btn-default">Sell your items</span>
-                    </a>
-                </li>
+                
             </ul>
         </div>
+    </div>
+</nav>
+<nav class="navbar" style="border-bottom:1px solid #ccc;    border-bottom: 1px solid #ccc;
+    background: #fff;
+    margin-bottom:2px;
+    margin-top: -20px;
+    height: 20px;
+    min-height: 60px;">
+    <div class="container">
+       <div class="row"> 
+        <ul class="nav navbar-nav">
+            
+            <li>
+                <a>My Area</a>
+            </li>
+            <li>
+                <a>Clothing</a>
+            </li>
+            <li>
+                <a>Electronics</a>
+            </li>
+        </ul>
+       </div>
     </div>
 </nav>

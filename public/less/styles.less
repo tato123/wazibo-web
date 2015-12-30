@@ -12,137 +12,175 @@ body {
 }
 
 .wz-header {
-    position: relative;
-    padding: 30px 0;
-    color: lighten(@color-blue-gradient1, 80%);
-    text-align: center;
-    text-shadow: 0 1px 0 rgba(0,0,0,.1);
-    background-color: #6f5499;
-    
-    background-image: linear-gradient(to bottom,@color-blue-gradient1 0,@color-blue-gradient2 100%);
-
-    background-repeat: repeat-x;
+  position: relative;
+  padding: 30px 0;
+  color: lighten(@color-blue-gradient1, 80%);
+  text-align: center;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, .1);
+  background-color: #6f5499;
+  background-image: linear-gradient(to bottom, @color-blue-gradient1 0, @color-blue-gradient2 100%);
+  background-repeat: repeat-x;
 }
 
 .avatar {
-    width: 32px;
-    height: 32px;
-    margin: 16px 0px;
-    background-size:contain;
+  width: 32px;
+  height: 32px;
+  margin: 16px 0px;
+  background-size: contain;
 }
 
 .navbar-default {
-    z-index: 2;
-    .navbar-brand,
-    .navbar-brand:visited,
-    .navbar-brand:focus {
-        color: @navbar-default-color;
-    }
+  z-index: 2;
 
-    .navbar-nav > li > a {
-        color: @navbar-default-color;
-        font-weight: 500;
-    }
+  .navbar-brand,
+  .navbar-brand:visited,
+  .navbar-brand:focus {
+    color: @navbar-default-color;
+  }
+
+  .navbar-nav > li > a {
+    color: @navbar-default-color;
+    font-weight: 500;
+  }
+
 }
 
 .wz-flat-btn {
-    padding: 10px;
-    border-radius: 4px;
-    color: white; 
+  padding: 10px;
+  border-radius: 4px;
+  color: white;
 }
 
 .wz-flat-btn-default {
-    background-color: #E91E63;
+  background-color: #E91E63;
 }
 
 .wz-pretty-pink {
-    transition: background-color 250ms;
+  transition: background-color 250ms;
 
-    &:hover {
-        background-color: #E91E63;
-    }
+  &:hover {
+    background-color: #E91E63;
+  }
+
 }
 
 .wz-media-photo {
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    position: relative;
-    display: inline-block;
-    vertical-align: bottom;
-    overflow: hidden;
-    background-color: #cacccd;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  position: relative;
+  display: inline-block;
+  vertical-align: bottom;
+  overflow: hidden;
+  background-color: #cacccd;
 }
 
-.wz-media-round {    
-    border-radius: 50%;
-    border: 2px solid #fff;
+.wz-media-round {
+  border-radius: 50%;
+  border: 2px solid #fff;
 }
+
 .btn-facebook {
-    border-color: #3B5998;
-    border-bottom-color: #263a63;
-    background-color: #3B5998;
-    color: #fff;
+  border-color: #3B5998;
+  border-bottom-color: #263a63;
+  background-color: #3B5998;
+  color: #fff;
 }
 
 .btn-block {
-    display: block;
-    white-space: normal;
-    width: 100%;
+  display: block;
+  white-space: normal;
+  width: 100%;
 }
 
 .icon-btn.btn-large {
-    position: relative;
-    padding-left: 51px;
+  position: relative;
+  padding-left: 51px;
 }
 
 .step {
-        border-radius: 50%;
-        border: 2px solid #ccc;
-        display: inline-block;
-        width: 30px;
-        height: 30px;
-        padding: 3px 10px;
-        margin-right: 10px;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  padding: 3px 10px;
+  margin-right: 10px;
 }
+
 .list-wizard-steps .active {
-    color: blue;
-    
+  color: blue;
 }
+
 .active > .step {
-    border-color: blue !important;
-} 
-    
+  border-color: blue !important;
+}
+
 .inputfile {
-	width: 0.1px;
-	height: 0.1px;
-	opacity: 0;
-	overflow: hidden;
-	position: absolute;
-	z-index: -1;
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
 }
 
 .inputfile + label {
-    font-size: 1.25em;
-    font-weight: 700;
-    color: white;
-    background-color: black;
-    display: inline-block;
+  font-size: 1.25em;
+  font-weight: 700;
+  color: white;
+  background-color: black;
+  display: inline-block;
 }
 
 .inputfile:focus + label,
 .inputfile + label:hover {
-    background-color: red;
+  background-color: red;
 }
 
 .inputfile + label {
-	cursor: pointer; /* "hand" cursor */
+  cursor: pointer; /* "hand" cursor */
 }
 
 .inputfile:focus + label {
-	outline: 1px dotted #000;
-	outline: -webkit-focus-ring-color auto 5px;
+  outline: 1px dotted #000;
+  outline: -webkit-focus-ring-color auto 5px;
 }
 
 .inputfile + label * {
-	pointer-events: none;
+  pointer-events: none;
+}
+
+
+.list-nav {
+  margin-bottom: 20px;
+
+  li {
+    margin-right: 10px;
+    font-size: (@font-size-base*1.28);
+    font-weight: bold;
+
+    a {
+      padding-bottom: 5px;
+
+      &.active {
+        border-bottom: 2px solid @color-blue;
+      }
+
+    }
+
+  }
+
+}
+
+.container-dark {
+  padding-top: 50px;
+  padding-bottom: 50px;
+  margin-top: 100px;
+  color: #99979c;
+  background-color: #2a2730;
+}
+
+.jumbotron {
+    background: fadeout(#185694, 5%);
+    color: #fff;
 }
