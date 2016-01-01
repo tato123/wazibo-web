@@ -8,7 +8,7 @@ WORKDIR /wazibo-web/src
 # Add all our code inside that directory that lives in the container
 ADD . /wazibo-web/src
 
-RUN npm install gulp jshint -g;npm install 
+RUN npm install gulp jshint -g;npm install; bower install
 
 # Expose our port for mapping
 EXPOSE  9080

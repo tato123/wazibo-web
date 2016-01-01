@@ -40,9 +40,10 @@ module.exports = function (passport) {
         wzapi
           .accessToken(accessToken)
           .provider('facebook')
-          .getAccount(function (user) {            
+          .getAccount(function (user) {        
+              user.provider = 'facebook';    
             // call the external service here with our access token
-            done(null, user.facebook);
+            done(null, user);
           });
       });
     }));

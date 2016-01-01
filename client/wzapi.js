@@ -1,175 +1,195 @@
 'use strict';
 
 var http = require('http'),
-	apiConfig = require('../config/api'),
-	unirest = require('unirest'),
-	logger = require('../logger'),
-	_ = require('lodash'),
-	util = require('util');
+  apiConfig = require('../config/api'),
+  unirest = require('unirest'),
+  logger = require('../logger'),
+  _ = require('lodash'),
+  util = require('util'),
+  q = require('q');
 
 module.exports = ClientFactory;
 
 
 function ClientFactory() {
-	
-	var Media = {
-		JSON: 'application/json'
-	};
-	
-	this._accessToken =   '';
-	this._bearerToken = '';	
-	this._provider = '';
-	this._refreshToken = '';
-		
-	this.accessToken = function (value) {
-		this._accessToken = value || '';
-		this._bearerToken = 'Bearer ' + this._accessToken;
-		return this;
-	}
 
-	this.provider = function (value) {
-		this._provider = value || '';
-		return this;
-	}
+  var Media = {
+    JSON: 'application/json'
+  };
 
-	this.refreshToken = function (value) {
-		this._refreshToken = value || '';
-		return this;
-	}
+  this._accessToken = '';
+  this._bearerToken = '';
+  this._provider = '';
+  this._refreshToken = '';
 
-	this.user = function (user) {
+  this.accessToken = function (value) {
+    this._accessToken = value || '';
+    this._bearerToken = 'Bearer ' + this._accessToken;
+    return this;
+  }
 
-		if (user && user.accessToken)
-			this.accessToken(user.accessToken);
+  this.provider = function (value) {
+    this._provider = value || '';
+    return this;
+  }
 
-		if (user && user.provider) {
-			this.provider(user.provider);
-		}
+  this.refreshToken = function (value) {
+    this._refreshToken = value || '';
+    return this;
+  }
 
-		if (user && user.refreshToken) {
-			this.refreshToken(user.refreshToken);
-		}
+  this.user = function (user) {
 
-		return this;
-	}
+    if (_.has(user, 'provider')) {
+      this.provider(user.provider);
+      var identity = _.findWhere(user.identities, { provider: user.provider });
+      this.accessToken(identity.accessToken);
+      this.refreshToken(identity.refreshToken);
+    }
+    else {
+      logger.warn('No user provider set');
+    }
 
-	this.httpHandler = function (response) {
-		this.handler(response.body);
-	}
+    return this;
+  }
+
+  this.httpHandler = function (response) {
+    logger.info('Status Code', response.statusCode);
+    this.handler(response.body);
+  }
 		
 	/**
 	 * @description
 	 * When a user logs into the api we want to let the api know that 
 	 * we will see this account start to show up in api requests. 
 	 */
-	this.getAccount = function (handler) {
-		var url = util.format('%s/%s', apiConfig.url(), 'account');
-		logger.info('calling url', url);
-		unirest.get(url)
-			.header('Accept', Media.JSON)
-			.header('Content-Type', Media.JSON)
-			.header('Authorization', this._bearerToken)
-			.header('X-Authorization-Provider', this._provider)
-			.end(this.httpHandler.bind({ handler: handler }));
-	}
+  this.getAccount = function (handler) {
+    var url = util.format('%s/%s', apiConfig.url(), 'account');
+    logger.info('calling url', url);
+    unirest.get(url)
+      .header('Accept', Media.JSON)
+      .header('Content-Type', Media.JSON)
+      .header('Authorization', this._bearerToken)
+      .header('X-Authorization-Provider', this._provider)
+      .end(this.httpHandler.bind({ handler: handler }));
+  }
 
 	/**
 	 * @description
 	 * Get either the item specified by the item id or all of the 
 	 * items 
-	 * @param {string} itemId optional parameter to locate a specific item record 
+	 * @param {Object} config options for getting our items 
 	 * @return {Promise}
 	 */
-	this.getItem = function () {
-		var itemId, handler;
-		if (arguments.length === 1) {
-			handler = arguments[0]
-		}
-		if (arguments.length === 2) {
-			itemId = arguments[0];
-			handler = arguments[1];
-		}
+  this.getItem = function (options) {
+    var deferred = q.defer();
+   
+    var url = util.format('%s/%s', apiConfig.url(), 'sale/item');
+    if ( !_.isUndefined(options) && _.has(options, 'itemId') ) {
+      url += '/' + options.itemId;
+    } 
+    
+    logger.info('calling url', url);
+    var request = unirest.get(url)
+      .header('Accept', Media.JSON)
+      .header('Content-Type', Media.JSON)
+      .header('Authorization', this._bearerToken)
+      .header('X-Authorization-Provider', this._provider);
 
-		var url = !_.isUndefined(itemId) ? util.format('%s/%s/%s', apiConfig.url(), 'sale/item', itemId) :
-			util.format('%s/%s', apiConfig.url(), 'sale/item');
-		logger.info('calling url', url);
-		unirest.get(url)
-			.header('Accept', Media.JSON)
-			.header('Content-Type', Media.JSON)
-			.header('Authorization', this._bearerToken)
-			.header('X-Authorization-Provider', this._provider)
-			.end(this.httpHandler.bind({ handler: handler }));
+    if ( !_.isUndefined(options) && _.has(options, 'user_id')) {
+      request.query({
+        user_id: options.user_id
+      });
+    }
+
+    request.end(function (response) {
+      if (response.statusCode < 200 || response.statusCode > 299) {
+        return deferred.reject(response);
+      }
+      deferred.resolve(response);
+    });
+    
+    return deferred.promise;
+  }
+
+  this.saveItem = function (options) {
+
+    var deferred = q.defer();
+    var url = util.format('%s/%s', apiConfig.url(), 'sale/item');
+    logger.info('calling url', url, 'with item', options.item);
+    unirest.post(url)
+      .header('Accept', Media.JSON)
+      .header('Content-Type', Media.JSON)
+      .header('Authorization', this._bearerToken)
+      .header('X-Authorization-Provider', this._provider)
+      .send(options.item)
+      .end(function (response) {
+        if (response.statusCode < 200 || response.statusCode > 299) {
+          return deferred.reject(response);
+        }
+        deferred.resolve(response);
+      });
+    return deferred.promise;
+  }
+
+  this.getEvent = function () {
+
+    var eventId, handler;
+    if (arguments.length === 1) {
+      handler = arguments[0]
+    }
+    if (arguments.length === 2) {
+      eventId = arguments[0];
+      handler = arguments[1];
+    }
 
 
-	}
+    logger.info('calling get event');
+    var url = !_.isUndefined(eventId) ? util.format('%s/%s/%s', apiConfig.url(), 'sale/event', eventId) :
+      util.format('%s/%s', apiConfig.url(), 'sale/event');
 
-	this.saveItem = function (eventId, item, handler) {
+    logger.info('calling url', url);
+    unirest.get(url)
+      .header('Accept', Media.JSON)
+      .header('Content-Type', Media.JSON)
+      .header('Authorization', this._bearerToken)
+      .header('X-Authorization-Provider', this._provider)
+      .end(this.httpHandler.bind({ handler: handler }));
 
-		var url = util.format('%s/%s', apiConfig.url(), 'sale/item');
-		url = _.isUndefined(eventId) ? url : url + '?event_id=' + eventId;
-		
-		logger.info('calling url', url, 'with item', item);
-		unirest.post(url)
-			.header('Accept', Media.JSON)
-			.header('Content-Type', Media.JSON)
-			.header('Authorization', this._bearerToken)
-			.header('X-Authorization-Provider', this._provider)			
-			.send(item)
-			.end(this.httpHandler.bind({ handler: handler }));
+  }
 
-	}
+  this.saveEvent = function (event, handler) {
+    var deferred = q.defer();
 
-	this.getEvent = function () {
-		
-		var eventId, handler;
-		if (arguments.length === 1) {
-			handler = arguments[0]
-		}
-		if (arguments.length === 2) {
-			eventId = arguments[0];
-			handler = arguments[1];
-		}
+    var url = util.format('%s/%s', apiConfig.url(), 'sale/event');
+    logger.info('calling url', url);
+    unirest.post(url)
+      .header('Accept', Media.JSON)
+      .header('Content-Type', Media.JSON)
+      .header('Authorization', this._bearerToken)
+      .header('X-Authorization-Provider', this._provider)
+      .send(event)
+      .end(function (response) {
+        if (response.statusCode < 200 || response.statusCode > 299) {
+          return deferred.reject(response);
+        }
+        deferred.resolve(response);
+      });
 
+    return deferred.promise;
+  }
 
-		logger.info('calling get event');
-		var url = !_.isUndefined(eventId) ? util.format('%s/%s/%s', apiConfig.url(), 'sale/event', eventId) :
-			util.format('%s/%s', apiConfig.url(), 'sale/event');
-
-		logger.info('calling url', url);
-		unirest.get(url)
-			.header('Accept', Media.JSON)
-			.header('Content-Type', Media.JSON)
-			.header('Authorization', this._bearerToken)
-			.header('X-Authorization-Provider', this._provider)
-			.end(this.httpHandler.bind({ handler: handler }));
-
-	}
-
-	this.saveEvent = function (event, handler) {		
-
-		var url = util.format('%s/%s', apiConfig.url(), 'sale/event');
-		logger.info('calling url', url);
-		unirest.post(url)
-			.header('Accept', Media.JSON)
-			.header('Content-Type', Media.JSON)
-			.header('Authorization', this._bearerToken)
-			.header('X-Authorization-Provider', this._provider)
-			.send(event)
-			.end(this.httpHandler.bind({ handler: handler }));
-
-	}
-	
-	this.getMediaBucket = function(handler) {
-		var url = util.format('%s/%s', apiConfig.url(), 'media/bucket');
-		logger.info('calling url', url);
-		unirest.get(url)
-			.header('Accept', Media.JSON)
-			.header('Content-Type', Media.JSON)
-			.header('Authorization', this._bearerToken)
-			.header('X-Authorization-Provider', this._provider)
-			.send()
-			.end(this.httpHandler.bind({ handler: handler }));
-	}
+  this.getMediaBucket = function (handler) {
+    var url = util.format('%s/%s', apiConfig.url(), 'media/bucket');
+    logger.info('calling url', url);
+    unirest.get(url)
+      .header('Accept', Media.JSON)
+      .header('Content-Type', Media.JSON)
+      .header('Authorization', this._bearerToken)
+      .header('X-Authorization-Provider', this._provider)
+      .send()
+      .end(this.httpHandler.bind({ handler: handler }));
+  }
 	
 	/**
 	 * @name localAuthentication
@@ -180,35 +200,36 @@ function ClientFactory() {
 	 * @param {String} email User email
 	 * @param {String} password user password
 	 * @param {Function} callback handler function
-	 */ 
-	this.localAuthentication = function(email, password, handler) {
-		var url = util.format('%s/%s', apiConfig.url(), 'account/login');
-		logger.info('calling url', url);
-		unirest.post(url)
-			.header('Accept', Media.JSON)
-			.header('Content-Type', Media.JSON)			
-			.send({email:email, password:password})
-			.end(this.httpHandler.bind({ handler: handler }));	
-	}
+	 */
+  this.localAuthentication = function (email, password, handler) {
+    var url = util.format('%s/%s', apiConfig.url(), 'account/login');
+    logger.info('calling url', url);
+    unirest.post(url)
+      .header('Accept', Media.JSON)
+      .header('Content-Type', Media.JSON)
+      .send({ email: email, password: password })
+      .end(this.httpHandler.bind({ handler: handler }));
+  }
+
 }
 
 // convience sake for grabbing all of the 
 // key names 
 ClientFactory.setupMethods = function () {
-	var methods = Object.getOwnPropertyNames(new ClientFactory());
-	for (var index in methods) {
-		ClientFactory.addMethod(methods[index]);
-	}
+  var methods = Object.getOwnPropertyNames(new ClientFactory());
+  for (var index in methods) {
+    ClientFactory.addMethod(methods[index]);
+  }
 }
 
 ClientFactory.addMethod = function (methodName) {
-	ClientFactory[methodName] = function () {
-		var factory = new ClientFactory();
-		if (_.isFunction(factory[methodName])) {
-			return factory[methodName].apply(factory, arguments);	
-		}
-		return factory[methodName] = arguments;
-	}
+  ClientFactory[methodName] = function () {
+    var factory = new ClientFactory();
+    if (_.isFunction(factory[methodName])) {
+      return factory[methodName].apply(factory, arguments);
+    }
+    return factory[methodName] = arguments;
+  }
 }
 
 ClientFactory.setupMethods();

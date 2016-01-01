@@ -6,3 +6,5 @@ node_modules/*
 typings
 npm-debug.log
 coverage
+public/lib/*
+public/lib

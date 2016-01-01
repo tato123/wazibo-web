@@ -1,0 +1,59 @@
+<div class="container">
+    <h1 style="display:inline-block;vertical-align:baseline;">Sales</h1>
+    {{#if message}}
+    <div class="alert alert-danger" role="alert">
+        {{message}}
+    </div>
+    {{/if}}
+    <div class="row">
+        <div class="col-sm-6 col-md-6 col-lg-6">
+            <h4>Updates</h4>
+            <p>You have no updates currently</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2 col-md-2 col-lg-2">
+            <a href="/sell/new" class="btn btn-default">Sell</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-10 col-md-10 col-lg-10">
+            
+            <div class="thumbnail" style="background:#fff; margin: 20px 0px;">
+                <h4>My Items for sale</h4>
+                
+                <table class="table">
+                    <thead>
+                        <tr>
+
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#if items}}
+                            {{#each items}}
+                            <tr>
+
+                                <td>{{this.name}}</td>
+                                <td>{{this.description}}</td>
+                                <td>{{this.privce}}</td>
+                            </tr>
+                            {{/each}}
+                        {{else }}
+                            <tr>
+                                <td colspan="3">
+                                    Looks like you haven't created anything yet
+                                </td>
+                            </tr>
+                        {{/if}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-sm-2 col-md-2 col-lg-2">
+            <p>Tips for getting started</p>
+        </div>
+    </div>
+</div>

@@ -10,15 +10,8 @@ router.get('/', function(req, res) {
   wzapi
     .user(req.user)
     .getEvent(function(events) {
-      logger.info('the user', req.user);
-      logger.info('events', events);
-
-      var items = [];
-      for (var x = 0; x < 6; x++) {
-        items.push(events[0]);
-      }
-      res.render('pages/home', {
-        items: items,
+     
+      res.render('pages/home', {     
         user: req.user
       });
     });

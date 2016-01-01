@@ -1,0 +1,14 @@
+<div class="container">
+  <label>Results found {{items.length}}</label>
+  {{#each items}}
+  <div class="media">
+    <div class="media-left">
+      <a href="#"> <img class="media-object" alt="64x64" style="width: 64px; height: 64px;" src=""> </a>
+    </div>
+    <div class="media-body">
+      <h4 class="media-heading">{{this.name}}</h4>
+      {{this.description}} 
+    </div>
+  </div>
+  {{/each}}
+</div>
