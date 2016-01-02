@@ -1,5 +1,8 @@
 <div class="container">
-    <h1 style="display:inline-block;vertical-align:baseline;">Sales</h1>
+    <section>
+    <h2 style="display:inline-block">Sales</h2>
+    <a href="/sell/new" class="btn btn-default pull-right" style="margin-top:20px">+ List new item</a>
+    <hr>
     {{#if error}}
     <div class="alert alert-danger" role="alert">
         {{error}}
@@ -10,22 +13,19 @@
         {{success}}
     </div>
     {{/if}}
+    
     <div class="row">
-        <div class="col-sm-6 col-md-6 col-lg-6">
-            <h4>Updates</h4>
-            <p>You have no updates currently</p>
+        <div class="col-sm-12 col-md-12 col-lg-12">            
+            <p>Wazibo allows you to track all your items for sale, tag items, and find individuals who are interested in purchasing your items</p>
         </div>
     </div>
+    </section>
+    
     <div class="row">
-        <div class="col-sm-2 col-md-2 col-lg-2">
-            <a href="/sell/new" class="btn btn-default">Sell</a>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-10 col-md-10 col-lg-10">
+        <div class="col-sm-12 col-md-12 col-lg-12">
             
-            <div class="thumbnail" style="background:#fff; margin: 20px 0px;">
-                <h4>My Items for sale</h4>
+            
+                
                 
                 <table class="table">
                     <thead>
@@ -44,8 +44,8 @@
                                 <td><a href="/item/{{this._id}}">{{this.name}}</a></td>
                                 <td>{{this.description}}</td>
                                 <td>{{this.price}}</td>
-                                <td><a href="http://localapi.wazibo.com/1.0/sale/item/{{this._id}}/qr">Print</a></td>
-                                <td>(Edit, <a href="/sell/item/{{this._id}}/delete">Delete</a>)</td>
+                                <td><a href="/sell/item/{{this._id}}/print/tag">Print</a></td>
+                                <td>(<a href="/sell/edit/{{this._id}}">Edit</a>, <a href="/sell/item/{{this._id}}/delete">Delete</a>)</td>
                             </tr>
                             {{/each}}
                         {{else }}
@@ -57,10 +57,7 @@
                         {{/if}}
                     </tbody>
                 </table>
-            </div>
-        </div>
-        <div class="col-sm-2 col-md-2 col-lg-2">
-            <p>Tips for getting started</p>
-        </div>
+
+        </div>       
     </div>
 </div>

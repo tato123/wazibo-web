@@ -1071,7 +1071,7 @@ html {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: 'Raleway', sans-serif;
   font-size: 14px;
   line-height: 1.42857143;
   color: #333333;
@@ -4475,7 +4475,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   }
 }
 .navbar-default {
-  background-color: transparent;
+  background-color: #F4F4F4;
   border-color: transparent;
 }
 .navbar-default .navbar-brand {
@@ -4487,7 +4487,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   background-color: transparent;
 }
 .navbar-default .navbar-text {
-  color: #000;
+  color: #333333;
 }
 .navbar-default .navbar-nav > li > a {
   color: #777;
@@ -4501,7 +4501,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .navbar-default .navbar-nav > .active > a:hover,
 .navbar-default .navbar-nav > .active > a:focus {
   color: #555;
-  background-color: rgba(0, 0, 0, 0);
+  background-color: #e3e3e3;
 }
 .navbar-default .navbar-nav > .disabled > a,
 .navbar-default .navbar-nav > .disabled > a:hover,
@@ -4526,7 +4526,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .navbar-default .navbar-nav > .open > a,
 .navbar-default .navbar-nav > .open > a:hover,
 .navbar-default .navbar-nav > .open > a:focus {
-  background-color: rgba(0, 0, 0, 0);
+  background-color: #e3e3e3;
   color: #555;
 }
 @media (max-width: 767px) {
@@ -4542,7 +4542,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   .navbar-default .navbar-nav .open .dropdown-menu > .active > a:hover,
   .navbar-default .navbar-nav .open .dropdown-menu > .active > a:focus {
     color: #555;
-    background-color: rgba(0, 0, 0, 0);
+    background-color: #e3e3e3;
   }
   .navbar-default .navbar-nav .open .dropdown-menu > .disabled > a,
   .navbar-default .navbar-nav .open .dropdown-menu > .disabled > a:hover,
@@ -5963,7 +5963,7 @@ button.close {
   position: absolute;
   z-index: 1070;
   display: block;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: 'Raleway', sans-serif;
   font-style: normal;
   font-weight: normal;
   letter-spacing: normal;
@@ -6081,7 +6081,7 @@ button.close {
   display: none;
   max-width: 276px;
   padding: 1px;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: 'Raleway', sans-serif;
   font-style: normal;
   font-weight: normal;
   letter-spacing: normal;
@@ -6724,29 +6724,40 @@ button.close {
     display: none !important;
   }
 }
+/*!
+ * Yamm!3 - Yet another megamenu for Bootstrap 3
+ * http://geedmo.github.com/yamm3
+ * 
+ * @geedmo - Licensed under the MIT license
+ */
+.yamm .nav,
+.yamm .collapse,
+.yamm .dropup,
+.yamm .dropdown {
+  position: static;
+}
+.yamm .container {
+  position: relative;
+}
+.yamm .dropdown-menu {
+  left: auto;
+}
+.yamm .yamm-content {
+  padding: 20px 30px;
+}
+.yamm .dropdown.yamm-fw .dropdown-menu {
+  left: 0;
+  right: 0;
+}
+* {
+  margin: 0;
+}
 html,
 body {
-  width: 100%;
   height: 100%;
-  padding: 0px;
-  margin: 0px;
-  font-family: 'Raleway', sans-serif;
+  width: 100%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-.wz-header {
-  position: relative;
-  padding: 30px 0;
-  color: #cdbfe3;
-  text-align: center;
-  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
-  background-color: #6f5499;
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#563d7c), to(#6f5499));
-  background-image: -webkit-linear-gradient(top, #563d7c 0, #6f5499 100%);
-  background-image: -o-linear-gradient(top, #563d7c 0, #6f5499 100%);
-  background-image: linear-gradient(to bottom, #563d7c 0, #6f5499 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#563d7c', endColorstr='#6F5499', GradientType=0);
-  background-repeat: repeat-x;
 }
 .avatar {
   width: 32px;
@@ -6760,33 +6771,11 @@ body {
 .navbar-default .navbar-brand,
 .navbar-default .navbar-brand:visited,
 .navbar-default .navbar-brand:focus {
-  color: #000;
+  color: #333333;
 }
 .navbar-default .navbar-nav > li > a {
-  color: #000;
+  color: #333333;
   font-weight: 500;
-}
-.video-playing {
-  height: 600px;
-  width: 100%;
-  object-fit: initial;
-  position: absolute;
-  top: 0px;
-  z-index: -10;
-}
-.wz-flat-btn {
-  padding: 10px;
-  border-radius: 4px;
-  color: white;
-}
-.wz-flat-btn-default {
-  background-color: #E91E63;
-}
-.wz-pretty-pink {
-  transition: background-color 250ms;
-}
-.wz-pretty-pink:hover {
-  background-color: #E91E63;
 }
 .wz-media-photo {
   -webkit-backface-visibility: hidden;
@@ -6800,4 +6789,62 @@ body {
 .wz-media-round {
   border-radius: 50%;
   border: 2px solid #fff;
+}
+.btn-facebook {
+  border-color: #3B5998;
+  border-bottom-color: #263a63;
+  background-color: #3B5998;
+  color: #fff;
+}
+.btn-block {
+  display: block;
+  white-space: normal;
+  width: 100%;
+}
+.icon-btn.btn-large {
+  position: relative;
+  padding-left: 51px;
+}
+.inputfile {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+.inputfile + label {
+  font-size: 1.25em;
+  font-weight: 700;
+  color: white;
+  background-color: black;
+  display: inline-block;
+}
+.inputfile:focus + label,
+.inputfile + label:hover {
+  background-color: red;
+}
+.inputfile + label {
+  cursor: pointer;
+  /* "hand" cursor */
+}
+.inputfile:focus + label {
+  outline: 1px dotted #000;
+  outline: -webkit-focus-ring-color auto 5px;
+}
+.inputfile + label * {
+  pointer-events: none;
+}
+.jumbotron {
+  background: rgba(24, 86, 148, 0.95);
+  color: #fff;
+}
+.preview img {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  object-fit: contain;
+}
+section {
+  margin-bottom: 30px;
 }

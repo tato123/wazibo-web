@@ -31,8 +31,7 @@ router.get('/:id', function (req, res) {
       id: req.params.id
     })
     .then(function (response) {
-      var item = response.body;
-      logger.info('My item is',item);
+      var item = response.body;      
       res.render('pages/item', { user: req.user, item: item, message: req.flash('error') });
     })
     .catch(function (error) {

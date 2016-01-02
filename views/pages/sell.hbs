@@ -5,12 +5,17 @@
         <h3>Add an Image</h3>
         <div class="form-group">
           <label>Pictures of your item</label>
+          
           <form data-image-form>
-          <div class="preview" style="border:1px solid #ccc; width:100%; height:200px; border-radius:3px;background:#fff;">            
+          <div class="preview" style="border:1px solid #ccc; width:100%; height:200px; border-radius:3px;background:#fff;">
+            {{#if item.photos}}
+             <img src="{{item.photos.0.imageUrl}}">
+            {{else}}            
               <div  data-image-holder style="height: 100%;width: 100%;vertical-align: middle;display: inline-block;text-align: center;margin-top: 25%;">
                 Drag an image here or <a data-image-trigger style="cursor:pointer">click to upload</a>
                 <input type="file" name="image" id="image" data-image-upload="{{bucket}}" style="display:none">
-              </div>            
+              </div>      
+              {{/if}}      
           </div>
           </form>
         </div>
@@ -20,22 +25,25 @@
           <h3>Details</h3>
           <div class="form-group">
             <label for="name">Name</label>
-            <input type="text" class="form-control" id="name" name="name" placeholder="Name of your item">
+            <input type="text" class="form-control" id="name" name="name" placeholder="Name of your item" value="{{item.name}}">
             <p class="help-block">Try to make names descriptive, it will be used to allow people to find your item</p>
           </div>
           <div class="form-group">
             <label for="price" >Price</label>
             <div>
               <label>$</label>
-            <input style="width:100px;display:inline-block;" type="number" class="form-control" id="price" name="price" placeholder="0.00">
+              <input style="width:100px;display:inline-block;" type="number" class="form-control" id="price" name="price" placeholder="0.00"  value="{{item.price}}">
               <label>USD</label>
             </div>
           </div>
           <div class="form-group">
             <label for="description">Description</label>
-            <textarea rows="4" class="form-control" id="description" name="description" placeholder="Tell people about your item"></textarea>
+            <textarea rows="4" class="form-control" id="description" name="description" placeholder="Tell people about your item">{{item.description}}</textarea>
             <p class="help-block">Tell us more about it</p>
           </div>
+          {{#if item.photos}}
+          <input type="hidden" value="{{item.photos.0._id}}">
+          {{/if}}
           <button type="submit" id="detail-submit" class="btn btn-default">Submit</button>
         </form>
       </div>
