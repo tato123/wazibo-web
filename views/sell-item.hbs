@@ -34,44 +34,6 @@
 
         </div>
             <img id="itemImagePreview" src="#" alt="your image" style="display:none; width:64px;height:auto;"/>
-        <script>
-                function readURL(input) {
-                    if (input.files && input.files[0]) {
-                        var reader = new FileReader();
-                
-                        reader.onload = function (e) {
-                            $('#itemImagePreview').attr('src', e.target.result);
-                            $('#itemImagePreview').css('display','block');
-                        }
-                
-                        reader.readAsDataURL(input.files[0]);
-                    }
-                }
-                
-                $("#itemImage").change(function(){
-                    readURL(this);
-                });
-                
-                var inputs = document.querySelectorAll( '.inputfile' );
-Array.prototype.forEach.call( inputs, function( input )
-{
-	var label	 = input.nextElementSibling,
-		labelVal = label.innerHTML;
-
-	input.addEventListener( 'change', function( e )
-	{
-		var fileName = '';
-		if( this.files && this.files.length > 1 )
-			fileName = ( this.getAttribute( 'data-multiple-caption' ) || '' ).replace( '{count}', this.files.length );
-		else
-			fileName = e.target.value.split( '\\' ).pop();
-
-		if( fileName )
-			label.querySelector( 'span' ).innerHTML = fileName;
-		else
-			label.innerHTML = labelVal;
-	});
-});
-        </script>
+        
     </form>
 </div>

@@ -2,25 +2,16 @@
 @import "../lib/yamm3/yamm/yamm.less";
 @import "./variables.less";
 
-html,
-body {
-  width: 100%;
-  height: 100%;
-  padding: 0px;
-  margin: 0px;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+* {
+  margin: 0;
 }
 
-.wz-header {
-  position: relative;
-  padding: 30px 0;
-  color: lighten(@color-blue-gradient1, 80%);
-  text-align: center;
-  text-shadow: 0 1px 0 rgba(0, 0, 0, .1);
-  background-color: #6f5499;
-  background-image: linear-gradient(to bottom, @color-blue-gradient1 0, @color-blue-gradient2 100%);
-  background-repeat: repeat-x;
+html,
+body {  
+  height: 100%;
+  width: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .avatar {
@@ -42,25 +33,6 @@ body {
   .navbar-nav > li > a {
     color: @navbar-default-color;
     font-weight: 500;
-  }
-
-}
-
-.wz-flat-btn {
-  padding: 10px;
-  border-radius: 4px;
-  color: white;
-}
-
-.wz-flat-btn-default {
-  background-color: #E91E63;
-}
-
-.wz-pretty-pink {
-  transition: background-color 250ms;
-
-  &:hover {
-    background-color: #E91E63;
   }
 
 }
@@ -98,24 +70,6 @@ body {
   padding-left: 51px;
 }
 
-.step {
-  border-radius: 50%;
-  border: 2px solid #ccc;
-  display: inline-block;
-  width: 30px;
-  height: 30px;
-  padding: 3px 10px;
-  margin-right: 10px;
-}
-
-.list-wizard-steps .active {
-  color: blue;
-}
-
-.active > .step {
-  border-color: blue !important;
-}
-
 .inputfile {
   width: 0.1px;
   height: 0.1px;
@@ -151,49 +105,14 @@ body {
   pointer-events: none;
 }
 
-
-.list-nav {
-  margin-bottom: 20px;
-
-  li {
-    margin-right: 10px;
-    font-size: (@font-size-base*1.28);
-    font-weight: bold;
-
-    a {
-      padding-bottom: 5px;
-
-      &.active {
-        border-bottom: 2px solid @color-blue;
-      }
-
-    }
-
-  }
-
-}
-
-.container-dark {
-  padding-top: 50px;
-  padding-bottom: 50px;
-  margin-top: 100px;
-  color: #99979c;
-  background-color: #2a2730;
-}
-
 .jumbotron {
     background: fadeout(#185694, 5%);
     color: #fff;
 }
 
-.sticky-footer {
-        position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 60px;
-    background-color: #f5f5f5;
-}
-
-.navbar {
-    margin-bottom: 0px;
+.preview img {
+  width: 100%;
+    height: 100%;
+  overflow: hidden;
+  object-fit: contain;
 }

@@ -1,30 +1,45 @@
 <div class="container">
-    <form action="/sell/item" method="post">
-        <div class="row">
-            <div class="col-sm-4 col-md-4 col-lg-4">
-                <h2>Add an Image</h2>
-                <div style="border:1px solid #ccc; width:100%; height:200px; border-radius:3px;">
-                    <div style="height: 100%;width: 100%;vertical-align: middle;display: inline-block;text-align: center;margin-top: 25%;">Drag an image here</div>
-                </div>
-            </div>
-            <div class="col-sm-8 col-md-8 col-lg-8">
-                <h2>Details</h2>
-                <div class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" class="form-control" id="name" name="name" placeholder="Name of your event">
-                    <p class="help-block">Try to make names descriptive, it will be used to allow peopel to find your item</p>
-                </div>
-                <div class="form-group">
-                    <label for="price">Price</label>
-                    <input type="number" class="form-control" id="price" name="price" placeholder="0.00">
-                </div>
-                <div class="form-group">
-                    <label for="description">Description</label>
-                    <input type="text" class="form-control" id="description" name="description" placeholder="Description of your event">
-                    <p class="help-block">Tell us more about it</p>
-                </div>
-                <button type="submit" class="btn btn-default">Submit</button>
-            </div>
+  
+    <div class="row">
+      <div class="col-sm-4 col-md-4 col-lg-4">
+        <h3>Add an Image</h3>
+        <div class="form-group">
+          <label>Pictures of your item</label>
+          <form data-image-form>
+          <div class="preview" style="border:1px solid #ccc; width:100%; height:200px; border-radius:3px;background:#fff;">            
+              <div  data-image-holder style="height: 100%;width: 100%;vertical-align: middle;display: inline-block;text-align: center;margin-top: 25%;">
+                Drag an image here or <a data-image-trigger style="cursor:pointer">click to upload</a>
+                <input type="file" name="image" id="image" data-image-upload="{{bucket}}" style="display:none">
+              </div>            
+          </div>
+          </form>
         </div>
-    </form>
+      </div>
+      <div class="col-sm-8 col-md-8 col-lg-8">
+        <form name="sellitem" action="/sell/item" method="POST">
+          <h3>Details</h3>
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" name="name" placeholder="Name of your item">
+            <p class="help-block">Try to make names descriptive, it will be used to allow people to find your item</p>
+          </div>
+          <div class="form-group">
+            <label for="price" >Price</label>
+            <div>
+              <label>$</label>
+            <input style="width:100px;display:inline-block;" type="number" class="form-control" id="price" name="price" placeholder="0.00">
+              <label>USD</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="description">Description</label>
+            <textarea rows="4" class="form-control" id="description" name="description" placeholder="Tell people about your item"></textarea>
+            <p class="help-block">Tell us more about it</p>
+          </div>
+          <button type="submit" id="detail-submit" class="btn btn-default">Submit</button>
+        </form>
+      </div>
+    </div>
+  
+  <script async src="/js/image-loader.js"></script>
 </div>

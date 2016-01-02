@@ -56,7 +56,7 @@ function ClientFactory() {
   this.httpHandler = function (response) {
     logger.info('Status Code', response.statusCode);
     this.handler(response.body);
-  }
+  };
 		
 	/**
 	 * @description
@@ -72,9 +72,10 @@ function ClientFactory() {
       .header('Authorization', this._bearerToken)
       .header('X-Authorization-Provider', this._provider)
       .end(this.httpHandler.bind({ handler: handler }));
-  }
+  };
 
 	/**
+   * @name getItem
 	 * @description
 	 * Get either the item specified by the item id or all of the 
 	 * items 
@@ -83,12 +84,12 @@ function ClientFactory() {
 	 */
   this.getItem = function (options) {
     var deferred = q.defer();
-   
+
     var url = util.format('%s/%s', apiConfig.url(), 'sale/item');
-    if ( !_.isUndefined(options) && _.has(options, 'itemId') ) {
-      url += '/' + options.itemId;
-    } 
-    
+    if (!_.isUndefined(options) && _.has(options, 'id')) {
+      url += '/' + options.id;
+    }
+
     logger.info('calling url', url);
     var request = unirest.get(url)
       .header('Accept', Media.JSON)
@@ -96,7 +97,7 @@ function ClientFactory() {
       .header('Authorization', this._bearerToken)
       .header('X-Authorization-Provider', this._provider);
 
-    if ( !_.isUndefined(options) && _.has(options, 'user_id')) {
+    if (!_.isUndefined(options) && _.has(options, 'user_id')) {
       request.query({
         user_id: options.user_id
       });
@@ -108,15 +109,42 @@ function ClientFactory() {
       }
       deferred.resolve(response);
     });
-    
-    return deferred.promise;
-  }
 
+    return deferred.promise;
+  };
+
+  /**
+   * @name saveItem
+   * @description
+   * Save items to the wazibo api
+   * 
+   * @param {Object} options
+   * @return {Promise}
+   */
   this.saveItem = function (options) {
 
     var deferred = q.defer();
     var url = util.format('%s/%s', apiConfig.url(), 'sale/item');
-    logger.info('calling url', url, 'with item', options.item);
+
+    if (_.isUndefined(options)) {
+      logger.error('Unable to save item, options object required')
+      deferred.reject('Missing options');
+    }
+
+    if (!_.has(options, 'item')) {
+      deferred.reject('Missing options');
+    }
+    
+    // parse out any possible photos
+    var photos = [];
+    _.forEach(options.item, function (value, key) {
+      if (key.indexOf('photos') !== -1) {
+        photos.push(value);
+      }
+    });
+    options.item.photos = photos;
+
+
     unirest.post(url)
       .header('Accept', Media.JSON)
       .header('Content-Type', Media.JSON)
@@ -129,6 +157,41 @@ function ClientFactory() {
         }
         deferred.resolve(response);
       });
+    return deferred.promise;
+  };
+  
+  /**
+   * @name deleteItem
+   * @description
+   * Deletes an item by its id, this operation requires that a user be
+   * authenticated and owns the rights to this actual item (or is authorized to delete it)
+   * @param {Object} options 
+   * @returns {Promise}
+   */
+  this.deleteItem = function (options) {
+    var deferred = q.defer();
+    
+    if (_.isUndefined(options) && !_.has(options, 'id')) {
+      logger.error('Options not provided when attempting to perform delete');
+      deferred.reject('Unable to perform delete item');
+    }
+
+    var url = util.format('%s/%s/%s', apiConfig.url(), 'sale/item', options.id);
+    
+
+    logger.info('calling url', url);
+    unirest.delete(url)
+      .header('Accept', Media.JSON)
+      .header('Content-Type', Media.JSON)
+      .header('Authorization', this._bearerToken)
+      .header('X-Authorization-Provider', this._provider)
+      .end(function (response) {
+        if (response.statusCode < 200 || response.statusCode > 299) {
+          return deferred.reject(response);
+        }
+        deferred.resolve(response);
+      });
+
     return deferred.promise;
   }
 
@@ -156,7 +219,7 @@ function ClientFactory() {
       .header('X-Authorization-Provider', this._provider)
       .end(this.httpHandler.bind({ handler: handler }));
 
-  }
+  };
 
   this.saveEvent = function (event, handler) {
     var deferred = q.defer();
@@ -177,19 +240,25 @@ function ClientFactory() {
       });
 
     return deferred.promise;
-  }
+  };
 
   this.getMediaBucket = function (handler) {
+    var deferred = q.defer();
     var url = util.format('%s/%s', apiConfig.url(), 'media/bucket');
     logger.info('calling url', url);
     unirest.get(url)
       .header('Accept', Media.JSON)
       .header('Content-Type', Media.JSON)
-      .header('Authorization', this._bearerToken)
-      .header('X-Authorization-Provider', this._provider)
       .send()
-      .end(this.httpHandler.bind({ handler: handler }));
-  }
+      .end(function (response) {
+        if (response.statusCode < 200 || response.statusCode > 299) {
+          return deferred.reject(response);
+        }
+        deferred.resolve(response);
+      });
+
+    return deferred.promise;
+  };
 	
 	/**
 	 * @name localAuthentication

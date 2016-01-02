@@ -5,5 +5,3 @@ node_modules/*
 .media-uploads
 typings
 coverage
-public/lib/*
-public/lib

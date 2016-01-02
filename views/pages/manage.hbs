@@ -1,8 +1,13 @@
 <div class="container">
     <h1 style="display:inline-block;vertical-align:baseline;">Sales</h1>
-    {{#if message}}
+    {{#if error}}
     <div class="alert alert-danger" role="alert">
-        {{message}}
+        {{error}}
+    </div>
+    {{/if}}
+    {{#if success}}
+    <div class="alert alert-success" role="alert">
+        {{success}}
     </div>
     {{/if}}
     <div class="row">
@@ -25,20 +30,22 @@
                 <table class="table">
                     <thead>
                         <tr>
-
                             <th>Name</th>
                             <th>Description</th>
                             <th>Price</th>
+                            <th>Downloadable Tag</th>
+                            <th>Manage</th>
                         </tr>
                     </thead>
                     <tbody>
                         {{#if items}}
                             {{#each items}}
                             <tr>
-
-                                <td>{{this.name}}</td>
+                                <td><a href="/item/{{this._id}}">{{this.name}}</a></td>
                                 <td>{{this.description}}</td>
-                                <td>{{this.privce}}</td>
+                                <td>{{this.price}}</td>
+                                <td><a href="http://localapi.wazibo.com/1.0/sale/item/{{this._id}}/qr">Print</a></td>
+                                <td>(Edit, <a href="/sell/item/{{this._id}}/delete">Delete</a>)</td>
                             </tr>
                             {{/each}}
                         {{else }}

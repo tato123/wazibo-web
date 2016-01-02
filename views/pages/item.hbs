@@ -1,0 +1,20 @@
+<div class="container">
+  <ol class="breadcrumb">
+    <li><a href="#">Home</a></li>
+    <li><a href="#">Library</a></li>
+    <li class="active">Data</li>
+  </ol>
+  <div class="row">
+    <div class="col-sm-3 col-md-3 col-lg-3">
+      <div class="thumbnail">
+        {{#if item.photos.length}}
+          <img src="{{item.photos.0.imageUrl}}">
+        {{/if}}                 
+      </div>
+    </div>
+    <div class="col-sm-offset-1 col-md-offset-1 col-lg-offset-1 col-sm-8 col-md-8 col-lg-8">
+      <h1>{{item.name}}</h1>
+      <p>{{item.description}}</p>
+      <label>${{item.price}}</label>
+    </div>
+  </div>

@@ -12,7 +12,8 @@ router.get('/', function(req, res) {
     .getEvent(function(events) {
      
       res.render('pages/home', {     
-        user: req.user
+        user: req.user,
+        items: [1,2,3,4,5,6]
       });
     });
 });

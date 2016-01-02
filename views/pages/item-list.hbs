@@ -3,7 +3,7 @@
   {{#each items}}
   <div class="media">
     <div class="media-left">
-      <a href="#"> <img class="media-object" alt="64x64" style="width: 64px; height: 64px;" src=""> </a>
+      <a href="/item/{{this._id}}"><img class="media-object" alt="64x64" style="width: 64px; height: 64px;" src="{{this.photos.0.imageUrl}}"> </a>
     </div>
     <div class="media-body">
       <h4 class="media-heading">{{this.name}}</h4>

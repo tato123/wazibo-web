@@ -23,4 +23,22 @@ router.get('/all', function (req, res) {
     });
 });
 
+router.get('/:id', function (req, res) {
+  
+  wzapi
+    .user(req.user)
+    .getItem({
+      id: req.params.id
+    })
+    .then(function (response) {
+      var item = response.body;
+      logger.info('My item is',item);
+      res.render('pages/item', { user: req.user, item: item, message: req.flash('error') });
+    })
+    .catch(function (error) {
+      logger.error('An error occured getting items');
+      res.render('pages/item', { user: req.user, item: {}, message: req.flash('error') });
+    });
+});
+
 module.exports = router;
